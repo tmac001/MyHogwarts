@@ -11,7 +11,7 @@ class BasePage:
             self._driver = webdriver.Chrome()
             self._driver.implicitly_wait(3)
 
-            self._driver.get("https://work.weixin.qq.com/")
+            self._driver.get(self._base_url)
         else:
             # Login与Register等页面需要用这个方法
             self._driver = driver

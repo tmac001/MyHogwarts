@@ -5,6 +5,8 @@ from selenium_test.page.register_page import RegisterPage
 
 
 class HomePage(BasePage):
+    _base_url = "https://work.weixin.qq.com/"
+
     def goto_register(self):
         self._driver.find_element(By.LINK_TEXT, '立即注册').click()
         return RegisterPage(self._driver)
