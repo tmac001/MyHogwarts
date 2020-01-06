@@ -5,7 +5,7 @@ from selenium_test.page.base_page import BasePage
 
 class RegisterPage(BasePage):
     def input_corp_name(self, name):
-        self._driver.find_element(By.ID, 'corp_name').send_key(name)
+        self._driver.find_element(By.ID, 'corp_name').send_keys(name)
         return self
 
     def register_submit(self):
