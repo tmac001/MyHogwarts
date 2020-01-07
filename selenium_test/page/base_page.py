@@ -9,7 +9,7 @@ class BasePage:
         if driver is None:
             # index页面会使用这个
             self._driver = webdriver.Chrome()
-            self._driver.implicitly_wait(3)
+            self._driver.implicitly_wait(2)
 
             self._driver.get(self._base_url)
         else:

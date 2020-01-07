@@ -10,5 +10,14 @@ class RegisterPage(BasePage):
         self._driver.find_element(By.ID, 'corp_name').send_keys(name)
         return self
 
+    def get_error_messages(self):
+        error_list = []
+        element_list = self._driver.find_elements(By.CSS_SELECTOR, ".js_error_msg")
+        for i in element_list:
+            error_list.append(i.text)
+        print(error_list)
+        return error_list
+
     def register_submit(self):
         self._driver.find_element(By.ID, 'submit_btn').click()
+        return self
