@@ -1,7 +1,7 @@
 from selenium_test.page.base_page import BasePage
 from selenium.webdriver.common.by import By
 
-from selenium_test.page.dowload_page import DowloadPage
+from selenium_test.page.download_page import DownloadPage
 from selenium_test.page.login_page import LoginPage
 from selenium_test.page.register_page import RegisterPage
 
@@ -17,6 +17,6 @@ class HomePage(BasePage):
         self._driver.find_element(By.LINK_TEXT, '企业登录').click()
         return LoginPage(self._driver)
 
-    def goto_dowload(self):
+    def goto_download(self):
         self._driver.find_element(By.LINK_TEXT, '下载').click()
-        return DowloadPage
+        return DownloadPage(self._driver)

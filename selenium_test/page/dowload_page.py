@@ -1,2 +1,0 @@
-class DowloadPage(object):
-    """TODO"""
