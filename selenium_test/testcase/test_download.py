@@ -1,0 +1,13 @@
+from selenium_test.page.base_page import BasePage
+from selenium_test.page.home_page import HomePage
+
+
+class TestDownload(BasePage):
+    def setup_method(self):
+        self.home_page = HomePage()
+
+    def test_download_jump(self):
+        self.home_page.goto_download()
+
+    def teardown_method(self):
+        self.home_page.close()
