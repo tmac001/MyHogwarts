@@ -6,7 +6,11 @@ class TestRegister:
         self.home_page = HomePage()
 
     def test_register_post_error(self):
-        assert '请选择所属行业' in self.home_page.goto_register().input_corp_name("dfd").register_submit().get_error_messages()
+        page = self.home_page.goto_register().input_corp_name("dfd").select_corp_industry().select_dropdown()
+        assert '请填写正确的验证码' in page.register_submit().get_error_messages()
+
+    def test_tmp(self):
+        self.home_page.goto_register().select_agree()
 
     def teardown_method(self):
         self.home_page.close()
