@@ -1,4 +1,4 @@
-from selenium_test.page.home_page import HomePage
+from selenium_test.page.index_page import HomePage
 
 
 class TestRegister:
