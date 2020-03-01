@@ -7,6 +7,9 @@ from time import sleep
 from appium import webdriver
 from appium.webdriver.common.mobileby import MobileBy
 from appium.webdriver.common.touch_action import TouchAction
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class TestAppium:
@@ -20,8 +23,8 @@ class TestAppium:
         # caps["dontStopAppOnReset"] = True
         # caps["unicodeKeyboard"] = True
         # caps["resetKeyboard"] = True
-
-        self.driver = webdriver.Remote("http://localho:4723/wd/hub", caps)
+        caps["chromedriverExecutable"] = r"D:\data\appium\chromedriver\44\chromedriver.exe"
+        self.driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
         self.driver.implicitly_wait(20)
 
     def test_search(self):
@@ -62,6 +65,46 @@ class TestAppium:
         assert self.driver.find_element(*followed_bn).get_attribute("text") == "已添加"
         self.driver.find_element(*followed_bn).click()
 
+    def test_get_source(self):
+        with open("page_source.xml", "w") as f:
+            f.write(self.driver.page_source)
+
+    def test_webview(self):
+        self.driver.find_element(MobileBy.XPATH, "//*[@text='交易' and contains(@resource-id,'tab_name')]").click()
+        self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "A股开户").click()
+        phone_number = (MobileBy.XPATH, " //android.widget.EditText")
+        WebDriverWait(self.driver, 20).until(expected_conditions.element_to_be_clickable(phone_number))
+        self.driver.find_element(*phone_number).send_keys("15399714423")
+        self.driver.find_element(MobileBy.ID, "code").send_keys("12345")
+
+    def test_webview_dubug(self):
+        self.driver.find_element(MobileBy.XPATH, "//*[@text='交易' and contains(@resource-id,'tab_name')]").click()
+        WebDriverWait(self.driver, 30).until(lambda x: len(self.driver.contexts) > 1)
+        # sleep(10)
+        print(self.driver.contexts)
+        self.driver.switch_to.context(self.driver.contexts[-1])
+        self.driver.find_element(By.CSS_SELECTOR, ".trade_home_info_3aI").click()
+        WebDriverWait(self.driver, 30).until(lambda x: len(self.driver.window_handles) > 3)
+        self.driver.switch_to.window(self.driver.window_handles[-1])
+        phone = (By.ID, 'phone-number')
+        WebDriverWait(self.driver, 10).until(expected_conditions.element_to_be_clickable(phone))
+        self.driver.find_element(*phone).send_keys("15399714423")
+
+    def test_webdriver_hk(self):
+        self.driver.find_element(MobileBy.XPATH, "//*[@text='交易' and contains(@resource-id,'tab_name')]").click()
+        WebDriverWait(self.driver, 30).until(lambda x: len(self.driver.contexts) > 1)
+        print(self.driver.contexts)
+        self.driver.switch_to.context(self.driver.contexts[-1])
+        self.driver.find_elements(By.CSS_SELECTOR, ".trade_home_info_3aI")[2].click()
+        WebDriverWait(self.driver, 30).until(lambda x: len(self.driver.window_handles) > 3)
+        print(self.driver.window_handles)
+        self.driver.switch_to.window(self.driver.window_handles[-1])
+        phone = (By.CSS_SELECTOR, '[placeholder="请输入手机号"]')
+        WebDriverWait(self.driver, 20).until(expected_conditions.element_to_be_clickable(phone))
+        self.driver.find_element(*phone).send_keys('15399714423')
+        self.driver.switch_to.context(self.driver.contexts[0])
+        self.driver.find_element(MobileBy.ID, 'action_bar_back').click()
+
     def teardown(self):
-        # pass
+        sleep(5)
         self.driver.quit()
