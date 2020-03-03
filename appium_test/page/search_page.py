@@ -10,7 +10,7 @@ class SearchPage(BasePage):
         return self
 
     def search_by_yaml(self, value):
-        self._params["value"] = value
+        self._send_key_value = value
         self.load_steps(r"D:\workspace\MyHogwarts\appium_test\page\search_steps.yaml")
         return self
 

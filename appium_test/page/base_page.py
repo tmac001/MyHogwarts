@@ -16,13 +16,19 @@ class BasePage:
     #  find异常处理重试次数
     _error_max = 3
     _error_count = 0
-    #
-    _params = {}
+    #  通过yaml数据驱动时，send_key(value)的值
+    _send_key_value = ""
 
     def __init__(self, driver: WebDriver = None):
         self._driver = driver
 
     def find(self, by, locate=None):
+        """
+        封装find_element方法，添加各种因弹出框，元素定位异常处理
+        :param by: 支持两种传参方式，1、(定位方式，定位器)元组传入 2、定位方式，定位器分别传入
+        :param locate:
+        :return:
+        """
         try:
             element = self._driver.find_element(*by) if isinstance(by, tuple) else self._driver.find_element(by, locate)
             self._error_count = 0
@@ -37,7 +43,10 @@ class BasePage:
                     return self.find(by, locate)
 
     def load_steps(self, path):
-        print(self._params)
+        """
+        加载yaml数据，驱动元素查找、点击、输入等事件
+        :param path: 文件路径
+        """
         element: WebElement = None
         with open(path) as f:
             steps: list[dict] = yaml.safe_load(f)
@@ -49,7 +58,8 @@ class BasePage:
                 if action == "click":
                     element.click()
                 if action == "send_key":
-                    step["value"] = self._params["value"]
+                    #  修改send_key的值
+                    step["value"] = self._send_key_value
                     element.send_keys(step["value"])
 
 

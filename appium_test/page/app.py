@@ -33,14 +33,9 @@ class App(BasePage):
 
     def main(self):
 
-        def wait_load_main(cd):
+        def wait_load_main(driver):
             source = self._driver.page_source
-
-            if "我的" in source:
-                return True
-            if "同意" in source:
-                return True
-            if "image_cancel" in source:
+            if "我的" in source or "同意" in source or "image_cancel" in source:
                 return True
             return False
 
