@@ -1,0 +1,9 @@
+-
+  by : id
+  locate : search_input_text
+  action : send_key
+  value : alibaba
+-
+  by : id
+  locate : name
+  action : click
