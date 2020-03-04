@@ -22,25 +22,53 @@ class BasePage:
     def __init__(self, driver: WebDriver = None):
         self._driver = driver
 
+    # 引入装饰器改造
+    # def find(self, by, locate=None):
+    #     """
+    #     封装find_element方法，添加各种因弹出框，元素定位异常处理
+    #     :param by: 支持两种传参方式，1、(定位方式，定位器)元组传入 2、定位方式，定位器分别传入
+    #     :param locate:
+    #     :return:
+    #     """
+    #     try:
+    #         element = self._driver.find_element(*by) if isinstance(by, tuple) else self._driver.find_element(by, locate)
+    #         self._error_count = 0
+    #         return element
+    #     except Exception as e:
+    #         if self._error_count >= self._error_max:
+    #             raise e
+    #         self._error_count += 1
+    #         for element in self._black_list:
+    #             if len(self._driver.find_elements(*element)) > 0:
+    #                 self._driver.find_element(*element).click()
+    #                 return self.find(by, locate)
+
+    def find_err_handle(func):
+        def wrapper(self, by, locate=None):
+            try:
+                return func(self, by, locate)
+            except Exception as e:
+                if self._error_count >= self._error_max:
+                    raise e
+                self._error_count += 1
+                for element in self._black_list:
+                    if len(self._driver.find_elements(*element)) > 0:
+                        self._driver.find_element(*element).click()
+                        return self.find(by, locate)
+
+        return wrapper
+
+    @find_err_handle
     def find(self, by, locate=None):
         """
-        封装find_element方法，添加各种因弹出框，元素定位异常处理
+        封装find_element方法，利用装饰器@find_err_handle添加各种因弹出框，元素定位异常处理
         :param by: 支持两种传参方式，1、(定位方式，定位器)元组传入 2、定位方式，定位器分别传入
         :param locate:
         :return:
         """
-        try:
-            element = self._driver.find_element(*by) if isinstance(by, tuple) else self._driver.find_element(by, locate)
-            self._error_count = 0
-            return element
-        except Exception as e:
-            if self._error_count >= self._error_max:
-                raise e
-            self._error_count += 1
-            for element in self._black_list:
-                if len(self._driver.find_elements(*element)) > 0:
-                    self._driver.find_element(*element).click()
-                    return self.find(by, locate)
+        element = self._driver.find_element(*by) if isinstance(by, tuple) else self._driver.find_element(by, locate)
+        self._error_count = 0
+        return element
 
     def load_steps(self, path):
         """
