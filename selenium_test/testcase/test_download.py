@@ -1,5 +1,5 @@
 from selenium_test.page.base_page import BasePage
-from selenium_test.page.index_page import HomePage
+from selenium_test.page.home_page import HomePage
 
 
 class TestDownload:

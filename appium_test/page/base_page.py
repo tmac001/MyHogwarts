@@ -1,4 +1,6 @@
 # @Time : 2020-03-01 18:17
+import logging
+
 import yaml
 from appium.webdriver import WebElement
 from appium.webdriver.webdriver import WebDriver
@@ -6,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 
 class BasePage:
+    logging.basicConfig(level=logging.INFO)
     #  异常弹框列表
     _black_list = [
         (By.ID, "tv_agree"),
@@ -55,7 +58,6 @@ class BasePage:
                     if len(self._driver.find_elements(*element)) > 0:
                         self._driver.find_element(*element).click()
                         return self.find(by, locate)
-
         return wrapper
 
     @find_err_handle
