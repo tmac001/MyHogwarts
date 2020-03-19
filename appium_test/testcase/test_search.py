@@ -7,7 +7,9 @@ from appium_test.page.app import App
 
 class TestSearch:
     def setup(self):
-        self.main = App().start().main()
+        # self.main = App().start().main()
+        self.app = App()
+        self.main = self.app.start().main()
 
     @pytest.mark.parametrize("title,price", [
         ("Alibaba", 100),
@@ -26,3 +28,6 @@ class TestSearch:
 
     def test_search_by_yaml(self):
         self.main.goto_search_by_yaml().search_by_yaml("tsla")
+
+    def teardown(self):
+        self.app.quit()
