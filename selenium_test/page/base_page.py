@@ -8,6 +8,11 @@ class BasePage:
     _base_url = ""
 
     def __init__(self, driver: WebDriver = None, reuse=False):
+        """
+
+        :param driver:
+        :param reuse: 是否以debugging模式启动chrome
+        """
         if driver is None:
             if reuse:
                 options = webdriver.ChromeOptions()

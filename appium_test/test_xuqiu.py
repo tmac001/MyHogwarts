@@ -2,6 +2,7 @@
 # This sample code uses the Appium python client
 # pip install Appium-Python-Client
 # Then you can paste this into a file and simply run with Python
+import os
 from time import sleep
 
 from appium import webdriver
@@ -20,6 +21,7 @@ class TestAppium:
         caps["deviceName"] = "test"
         caps["appActivity"] = ".view.WelcomeActivityAlias"
         caps["noReset"] = True
+        caps["udid"] = os.getenv("udid")
         # caps["dontStopAppOnReset"] = True
         # caps["unicodeKeyboard"] = True
         # caps["resetKeyboard"] = True

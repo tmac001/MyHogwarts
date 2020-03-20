@@ -22,9 +22,9 @@ class App(BasePage):
                     "appActivity": self._activity,
                     # "noReset": True,
                     "chromedriverExecutable": r"D:\data\appium\chromedriver\44\chromedriver.exe"}
-            # self._driver = webdriver.Remote("http://localhost:4444/wd/hub", caps)
-            # grid 模式
-            self._driver = webdriver.Remote("http://192.168.1.6:5555/wd/hub", caps)
+            self._driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
+            # selenium grid 模式
+            # self._driver = webdriver.Remote("http://192.168.1.6:4444/wd/hub", caps)
 
             self._driver.implicitly_wait(5)
         else:

@@ -9,8 +9,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 class TestWx:
     def setup_method(self):
         options = webdriver.ChromeOptions()
-        # 设置启动debug模式浏览器
-        # options.debugger_address = "127.0.0.1:9222"
+        # 设置启动debug模式浏览器   chrome --remote-debugging-port=9222
+        options.debugger_address = "127.0.0.1:9222"
 
         # 设置无界面模式的启动方式，使用headless模式
         # options.add_argument("--headless")
@@ -45,6 +45,7 @@ class TestWx:
         WebDriverWait(self.driver, timeout=10).until(method)
 
     def test_add(self):
+        # WebDriverWait(self.driver,10).until(expected_conditions.element_to_be_clickable())
         self.driver.find_element(By.LINK_TEXT, "通讯录").click()
         self.wait(10, self.find_add_member)
         element_form = (By.CSS_SELECTOR, '[id="username"]')
@@ -67,6 +68,6 @@ class TestWx:
             self.driver.find_element(By.CSS_SELECTOR, '.js_has_member > div:nth-child(1) > .js_add_member').click()
         return element_exit >= 1
 
-    def teardowm_method(self):
+    def teardown_method(self):
         time.sleep(3)
         self.driver.quit()

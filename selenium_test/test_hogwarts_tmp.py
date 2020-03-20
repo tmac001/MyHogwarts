@@ -15,6 +15,8 @@ class TestDefaultSuite:
         # options.add_argument("--disable-gpu")
         # options.add_argument("--window-size=1280,1696")
         # self.driver = webdriver.Chrome(options=options)
+
+        #  selenium gird 模式添加desired_capabilities参数匹配节点分发任务
         chrome_capabilities = {
             "browserName": "chrome"
         }
