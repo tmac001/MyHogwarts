@@ -10,21 +10,31 @@ class TestCropTag:
     @classmethod
     def setup_class(cls):
         cls.corp_tag = CorpTag()
+        cls.reset()
 
     def test_get_corp_tag_list(self):
         res = self.corp_tag.get_corp_tag_list()
-        print(res)
         assert res["errmsg"] == "ok"
-        # print(BaseApi.jsonpath(res, "$..tag[?(@.name == 'demo1')]"))
+
+    # def test_get_corp_tag_list(self):
+    #     res = self.corp_tag.get_corp_tag_list()
+    #     print(res)
+    #     assert res["errmsg"] == "ok"
+    #     # print(BaseApi.jsonpath(res, "$..tag[?(@.name == 'demo1')]"))
+
+    # @pytest.mark.parametrize("name", file["test_add_corp_tag"])
+    # def test_add_corp_tag(self, name):
+    #     res = self.corp_tag.add_corp_tag(name)
+    #     print(res)
+    #     assert res["errmsg"] == "ok"
+    #     # todo 断言通过删除添加数据
+    #     if res["errmsg"] == "ok":
+    #         self.corp_tag.delete_corp_tag(name)
 
     @pytest.mark.parametrize("name", file["test_add_corp_tag"])
     def test_add_corp_tag(self, name):
         res = self.corp_tag.add_corp_tag(name)
-        print(res)
         assert res["errmsg"] == "ok"
-        # 断言通过删除添加数据
-        if res["errmsg"] == "ok":
-            self.corp_tag.delete_corp_tag(name)
 
     @pytest.mark.parametrize("name", file["test_delete_corp_tag"])
     def test_delete_corp_tag(self, name):
@@ -35,3 +45,11 @@ class TestCropTag:
         res = self.corp_tag.delete_corp_tag([res[0]['id']])
         print(res)
         assert res["errmsg"] == "ok"
+
+    @classmethod
+    def reset(cls):
+        if len(cls.corp_tag.get_corp_tag_list()["tag_group"][0]["tag"])>3:
+            for name in cls.file["test_add_corp_tag"]:
+                res = BaseApi.jsonpath(cls.corp_tag.get_corp_tag_list(), f"$..tag[?(@.name == '{name}')]")
+                print(res)
+                cls.corp_tag.delete_corp_tag([res[0]['id']])

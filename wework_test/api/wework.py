@@ -1,8 +1,10 @@
 # @Time : 2020-05-04 15:13
 import requests
 
+from wework_test.api.baseapi import BaseApi
 
-class WeWork:
+
+class WeWork(BaseApi):
     corpid = "ww9bc7cba253d718ce"
 
     @classmethod
