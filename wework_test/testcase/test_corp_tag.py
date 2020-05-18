@@ -6,7 +6,7 @@ from wework_test.api.corp_tag import CorpTag
 
 class TestCropTag:
     file = BaseApi.yaml_load("../../wework_test/testcase/corp_data.yaml")
-
+    step = BaseApi.yaml_load("../../wework_test/testcase/test_corp_tag_step.yaml")
     @classmethod
     def setup_class(cls):
         cls.corp_tag = CorpTag()
@@ -14,8 +14,11 @@ class TestCropTag:
 
     def test_get_corp_tag_list(self):
         res = self.corp_tag.get_corp_tag_list()
-        assert res["errmsg"] == "ok"
+        print(res)
+        # assert res["errmsg"] == "ok"
 
+    def test_get_corp_tag_list_by_yaml(self):
+        self.corp_tag.steps_run(self.step["test_get_corp_tag_list"])
     # def test_get_corp_tag_list(self):
     #     res = self.corp_tag.get_corp_tag_list()
     #     print(res)
@@ -27,7 +30,6 @@ class TestCropTag:
     #     res = self.corp_tag.add_corp_tag(name)
     #     print(res)
     #     assert res["errmsg"] == "ok"
-    #     # todo 断言通过删除添加数据
     #     if res["errmsg"] == "ok":
     #         self.corp_tag.delete_corp_tag(name)
 

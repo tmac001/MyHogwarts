@@ -10,7 +10,7 @@ class CorpTag(WeWork):
     def __init__(self):
         self.data = self.yaml_load("../../wework_test/api/corp_tag_step.yaml")
 
-    def get_corp_tag_list(self):
+    def get_corp_tag_list(self, **kwargs):
         self.param["access_token"] = self.get_token(self.secret)
         req = self.data["get_corp_tag_list"]
         return self.api_send(req)

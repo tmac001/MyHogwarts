@@ -25,6 +25,7 @@ class BaseApi:
         with open(path, encoding="utf-8") as f:
             return yaml.safe_load(f)
 
+    # 业务逻辑驱动
     @classmethod
     def api_send(cls, req):
         # 参数替换
@@ -32,12 +33,26 @@ class BaseApi:
         for k, v in cls.param.items():
             raw = raw.replace(f"${{{k}}}", v)
         req = yaml.safe_load(raw)
+
+        # 发起请求
         res = requests.request(method=req["method"], url=req["url"], params=req["params"], json=req["json"])
         cls.format(res.text)
         return res.json()
+
+    #  测试用例步骤驱动
+    def steps_run(self, req: list):
+        res = None
+        for r in req:
+            if isinstance(r, dict):
+                if "method" in r.keys():
+                    res = getattr(self, r.get("method"))()
+                if "assertion" in r.keys():
+                    print(type(res))
+                    assert res[r.get("assertion")[0]] == r.get("assertion")[1]
+                # todo 复杂用例，以及带有参数的用例的驱动封装
 
 
 if __name__ == '__main__':
     # BaseApi.format(
     # '{"errcode": 0, "errmsg": "搜索"}')
-    print(BaseApi.yaml_load("corp_tag_step.yaml"))
+    print(json.dumps(BaseApi.yaml_load("corp_tag_step.yaml")))
