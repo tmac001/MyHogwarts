@@ -1,20 +1,20 @@
 # @Time : 2020-05-04 15:06
 import json
-
-import jsonpath as jsonpath
+import jsonpath
 import requests
 import yaml
 
 
 class BaseApi:
+    # 需要替换的参数
     param = {}
+    # 每个应用独立的密钥，通过子类赋值
     secret = ""
 
     @classmethod
     def format(cls, r):
         res = json.dumps(json.loads(r), indent=2, ensure_ascii=False)
         print(res)
-        # return res
 
     @classmethod
     def jsonpath(cls, r, expr):
@@ -47,9 +47,8 @@ class BaseApi:
                 if "method" in r.keys():
                     res = getattr(self, r.get("method"))()
                 if "assertion" in r.keys():
-                    print(type(res))
                     assert res[r.get("assertion")[0]] == r.get("assertion")[1]
-                # todo 复杂用例，以及带有参数的用例的驱动封装
+                # todo 复杂用例，以及需要参数替换的用例的驱动封装
 
 
 if __name__ == '__main__':
