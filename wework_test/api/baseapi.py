@@ -8,7 +8,7 @@ import yaml
 class BaseApi:
     # 需要替换的参数
     param = {}
-    # 每个应用独立的密钥，通过子类赋值
+    # 每个应用独立的密钥
     secret = ""
 
     @classmethod
